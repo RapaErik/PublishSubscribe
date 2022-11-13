@@ -263,7 +263,7 @@ namespace PublishSubscribe.Tests.Services.Tests
 
         #region GetTopics
         [Fact]
-        public void GetTopics_FirstEntryInList_ItShouldReturnAll()
+        public void GetTopics_WithManySubscribers_ItShouldReturnAll()
         {
             // Assert
 
@@ -289,6 +289,8 @@ namespace PublishSubscribe.Tests.Services.Tests
             Assert.True(sub3);
             Assert.True(sub4);
 
+            Assert.Equal(4, service.SubscriberQueue.Count);
+
             Assert.Equal(3, topics.Count());
 
             Assert.NotNull(topics.Where(x => x == subscriber1.Topic).FirstOrDefault());
@@ -297,8 +299,165 @@ namespace PublishSubscribe.Tests.Services.Tests
             Assert.NotNull(topics.Where(x => x == subscriber4.Topic).FirstOrDefault());
 
         }
+        [Fact]
+        public void GetTopics_WithEmptyDictionary_ItShouldReturnNone()
+        {
+            // Assert
+            var service = new SubscribeService();
 
-      
+            // Act
+
+            var topics = service.GetTopics();
+
+            // Assert
+
+            Assert.NotNull(service.SubscriberQueue);
+            Assert.Empty(service.SubscriberQueue);
+
+            Assert.NotNull(topics);
+            Assert.Empty(topics);
+
+        }
+
+        #endregion
+
+        #region GetSubscribers
+
+        [Fact]
+        public void GetSubscribers_MultipleSubscribers_WithQueueItemInEachQueue_ItShouldReturnAll()
+        {
+            // Assert
+            Subscriber subscriber1 = new Subscriber { Id = 1, ResponseUrl = "https://google.com", Topic = "topic1" };
+            Subscriber subscriber2 = new Subscriber { Id = 2, ResponseUrl = "https://google.ro", Topic = "topic1" };
+            Subscriber subscriber3 = new Subscriber { Id = 3, ResponseUrl = "https://google.hu", Topic = "topic3" };
+
+            QueueItem queueItem1 = new QueueItem { Message = "msg1", PublisherId = 4 };
+            QueueItem queueItem2 = new QueueItem { Message = "msg2", PublisherId = 5 };
+            QueueItem queueItem3 = new QueueItem { Message = "msg3", PublisherId = 6 };
+
+            var service = new SubscribeService();
+
+
+            var sub1 = service.Subscribe(subscriber1);
+            var sub2 = service.Subscribe(subscriber2);
+            var sub3 = service.Subscribe(subscriber3);
+
+
+            service.AddToQueue(subscriber1.Topic, queueItem1);
+            service.AddToQueue(subscriber2.Topic, queueItem2);
+            service.AddToQueue(subscriber3.Topic, queueItem3);
+
+            // Act
+
+            var queueLastItems =  service.GetSubscribers(subscriber1.Topic);
+
+            // Assert
+
+            Assert.True(sub1);
+            Assert.True(sub2);
+            Assert.True(sub3);
+
+            Assert.NotNull(queueLastItems);
+            Assert.NotEmpty(queueLastItems);
+            Assert.Equal(2, queueLastItems.Count());
+
+            foreach (var item in queueLastItems)
+            {
+                Assert.Contains(item.Subscriber, new List<Subscriber> { subscriber1, subscriber2 });
+                Assert.Equal(queueItem1.Message, item.Message.Message);
+            }
+        }
+
+        [Fact]
+        public void GetSubscribers_MultipleSubscribers_WithEmptyQueue_ItShouldEmpty()
+        {
+            // Assert
+            Subscriber subscriber1 = new Subscriber { Id = 1, ResponseUrl = "https://google.com", Topic = "topic1" };
+            Subscriber subscriber2 = new Subscriber { Id = 2, ResponseUrl = "https://google.ro", Topic = "topic1" };
+            Subscriber subscriber3 = new Subscriber { Id = 3, ResponseUrl = "https://google.hu", Topic = "topic3" };
+
+            QueueItem queueItem1 = new QueueItem { Message = "msg1", PublisherId = 4 };
+            QueueItem queueItem2 = new QueueItem { Message = "msg2", PublisherId = 5 };
+            QueueItem queueItem3 = new QueueItem { Message = "msg3", PublisherId = 6 };
+
+            var service = new SubscribeService();
+
+
+            var sub1 = service.Subscribe(subscriber1);
+            var sub2 = service.Subscribe(subscriber2);
+            var sub3 = service.Subscribe(subscriber3);
+
+            // Act
+
+            var queueLastItems = service.GetSubscribers(subscriber1.Topic);
+
+            // Assert
+
+            Assert.True(sub1);
+            Assert.True(sub2);
+            Assert.True(sub3);
+
+            Assert.NotNull(queueLastItems);
+            Assert.Empty(queueLastItems);
+        }
+
+        #endregion
+        #region RemoveFromQueue
+
+        [Fact]
+        public void RemoveFromQueue_WithLastItemInQueue_ItShouldRemoveTheLastOne_ItShouldReturnTrue()
+        {
+            // Assert
+            Subscriber subscriber1 = new Subscriber { Id = 1, ResponseUrl = "https://google.com", Topic = "topic1" };
+
+            QueueItem queueItem1 = new QueueItem { Message = "msg1", PublisherId = 4 };
+
+            var service = new SubscribeService();
+
+            var sub1 = service.Subscribe(subscriber1);
+
+            service.AddToQueue(subscriber1.Topic, queueItem1);
+
+            // Act
+
+            var res = service.RemoveFromQueue(subscriber1);
+
+            // Assert
+
+            Assert.True(sub1);
+            Assert.True(res);
+
+            Assert.NotNull(service.SubscriberQueue);
+            Assert.NotNull(service.SubscriberQueue[subscriber1]);
+            Assert.Empty(service.SubscriberQueue[subscriber1]);
+          
+        }
+
+        [Fact]
+        public void RemoveFromQueue_WithEmptyDictionary_ItShouldReturnFalse()
+        {
+            // Assert
+            Subscriber subscriber1 = new Subscriber { Id = 1, ResponseUrl = "https://google.com", Topic = "topic1" };
+
+            QueueItem queueItem1 = new QueueItem { Message = "msg1", PublisherId = 4 };
+
+            var service = new SubscribeService();
+
+           
+            service.AddToQueue(subscriber1.Topic, queueItem1);
+
+            // Act
+
+            var res = service.RemoveFromQueue(subscriber1);
+
+            // Assert
+
+            Assert.False(res);
+
+            Assert.NotNull(service.SubscriberQueue);
+            Assert.Empty(service.SubscriberQueue);
+
+        }
         #endregion
     }
 }
