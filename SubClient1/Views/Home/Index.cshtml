@@ -1,0 +1,83 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+@model HomeViewModel
+
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+</div>
+
+
+<div class="row">
+    <label>Topic1:&nbsp;</label>
+    @if (!Model.Status1)
+    {
+        <form asp-controller="Home" asp-action="Index">
+            <input type="hidden" id="buttonSubscirbe" name="buttonSubscirbe" value="topic1" />
+            <button type="submit">Subscribe Topic1</button>
+        </form>
+    }
+    else
+    {
+        <form asp-controller="Home" asp-action="Index">
+            <input type="hidden" id="buttonUnsubscribe" name="buttonUnsubscribe" value="topic1" />
+            <button type="submit">Unubscribe Topic1</button>
+        </form>
+        @foreach (var item in Model.Topic1)
+        {
+            <span>@item &nbsp;</span>
+        }
+    }
+</div>
+
+<div class="row">
+    <label>Topic2:&nbsp;</label>
+    @if (!Model.Status2)
+    {
+        <form asp-controller="Home" asp-action="Index">
+            <input type="hidden" id="buttonSubscirbe" name="buttonSubscirbe" value="topic2" />
+            <button type="submit">Subscribe Topic2</button>
+        </form>
+    }
+    else
+    {
+        <form asp-controller="Home" asp-action="Index">
+            <input type="hidden" id="buttonUnsubscribe" name="buttonUnsubscribe" value="topic2" />
+            <button type="submit">Unubscribe Topic2</button>
+        </form>
+        @foreach (var item in Model.Topic2)
+        {
+            <span>@item &nbsp;</span>
+        }
+    }
+</div>
+
+<div class="row">
+    <label>Topic3:&nbsp;</label>
+    @if (!Model.Status3)
+    {
+        <form asp-controller="Home" asp-action="Index">
+            <input type="hidden" id="buttonSubscirbe" name="buttonSubscirbe" value="topic3" />
+            <button type="submit">Subscribe Topic3</button>
+        </form>
+    }
+    else
+    {
+        <form asp-controller="Home" asp-action="Index">
+            <input type="hidden" id="buttonUnsubscribe" name="buttonUnsubscribe" value="topic3" />
+            <button type="submit">Unubscribe Topic3</button>
+        </form>
+        @foreach (var item in Model.Topic3)
+        {
+            <span>@item &nbsp;</span>
+        }
+    }
+</div>
+
+<script>
+    function autoRefresh() {
+        window.location = window.location.href;
+    }
+    setInterval('autoRefresh()', 5000);
+</script>
