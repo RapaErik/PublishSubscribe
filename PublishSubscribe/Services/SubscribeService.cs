@@ -35,7 +35,7 @@ namespace PublishSubscribe.Services
         }
         public IEnumerable<string> GetTopics()
         {
-            foreach (var item in _subscriberQueues.Keys.Select(s=>s.Topic))
+            foreach (var item in _subscriberQueues.Keys.Select(s=>s.Topic).Distinct())
             {
                 yield return item;
             }
