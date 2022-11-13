@@ -1,6 +1,7 @@
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
+using PublishSubscribe.Configuration;
 using PublishSubscribe.Extensions;
 using PublishSubscribe.Middlewares;
 
@@ -12,7 +13,7 @@ builder.Services.AddControllers();
 
 //this part we need for FluentValidation
 builder.Services.AddFluentValidationAutoValidation().AddValidatorsFromAssembly(typeof(Program).Assembly);
-
+builder.Services.ConfigureOptions<ApiBehaviorOptionsConfiguration>();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
