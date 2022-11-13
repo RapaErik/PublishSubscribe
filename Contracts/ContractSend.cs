@@ -18,7 +18,8 @@ namespace Contracts
             PublisherId = publisherId;
             Topic = topic;  
             Token = token;
-            Message = JsonConvert.SerializeObject(data);
+            var json = JsonConvert.SerializeObject(data);
+            Message = CryptoAESManager.Encrypt(json);
         }
     }
 }

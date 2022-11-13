@@ -17,10 +17,11 @@ namespace Contracts
         public string Message
         {
             get { return _message; }
-            set 
+            set
             {
                 _message = value;
-                _data = JsonConvert.DeserializeObject<T>(_message);
+                var json = CryptoAESManager.Dencrypt(_message);
+                _data = JsonConvert.DeserializeObject<T>(json);
             }
         }
 
