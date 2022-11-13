@@ -5,9 +5,15 @@ namespace PublishSubscribe.Services
 {
     public class SubscribeService : ISubscribeService
     {
-        //private readonly SubscriberEqualityComparer _subscriberEqualityComparer = new SubscriberEqualityComparer();
         private readonly ConcurrentDictionary<Subscriber, Queue<QueueItem>> _subscriberQueues;
         private static object _lockSubscriber = new object();
+
+        //This field is mostly for testing
+        public ConcurrentDictionary<Subscriber, Queue<QueueItem>> SubscriberQueue 
+        {
+            get { return _subscriberQueues; }
+        }
+
         public SubscribeService()
         {
             _subscriberQueues = new ConcurrentDictionary<Subscriber, Queue<QueueItem>>(new SubscriberEqualityComparer());
