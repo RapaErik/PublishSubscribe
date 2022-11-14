@@ -77,9 +77,9 @@ namespace PublishSubscribe.Tests.Services.Tests
         }
         #endregion
 
-        #region Unubscribe
+        #region Unsubscribe
         [Fact]
-        public void Unubscribe_SubsciberExistsInTheList_ItShouldReturnTrue()
+        public void Unsubscribe_SubsciberExistsInTheList_ItShouldReturnTrue()
         {
             // Assert
             Subscriber subscriber = new Subscriber { Id = 1, ResponseUrl = "https://google.com", Topic = "topic1" };
@@ -98,7 +98,7 @@ namespace PublishSubscribe.Tests.Services.Tests
         }
 
         [Fact]
-        public void Unubscribe_SubsciberNotExistsInTheList_ItShouldReturnFalse()
+        public void Unsubscribe_SubsciberNotExistsInTheList_ItShouldReturnFalse()
         {
             // Assert
             Subscriber subscriber = new Subscriber { Id = 1, ResponseUrl = "https://google.com", Topic = "topic1" };
@@ -114,7 +114,7 @@ namespace PublishSubscribe.Tests.Services.Tests
         }
 
         [Fact]
-        public void Unubscribe_MultipleUnsubscibe_SubscibersExistsInTheList_ItShouldReturnTrue()
+        public void Unsubscribe_MultipleUnsubscibe_SubscibersExistsInTheList_ItShouldReturnTrue()
         {
             // Assert
             Subscriber subscriber1 = new Subscriber { Id = 1, ResponseUrl = "https://google.com", Topic = "topic1" };

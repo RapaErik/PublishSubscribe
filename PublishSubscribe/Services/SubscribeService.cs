@@ -9,7 +9,7 @@ namespace PublishSubscribe.Services
         private static object _lockSubscriber = new object();
 
         //This field is mostly for testing
-        public ConcurrentDictionary<Subscriber, Queue<QueueItem>> SubscriberQueue 
+        public ConcurrentDictionary<Subscriber, Queue<QueueItem>> SubscriberQueue
         {
             get { return _subscriberQueues; }
         }
@@ -23,19 +23,17 @@ namespace PublishSubscribe.Services
         {
             lock (_lockSubscriber)
             {
-                var toUpdate = _subscriberQueues.Where(s => s.Key.Topic == topic).Select(s => s.Key);
-                if (toUpdate?.Count() > 0)
+                var listToUpdate = _subscriberQueues.Where(s => s.Key.Topic == topic).Select(s => s.Key).ToList();
+
+                foreach (var item in listToUpdate)
                 {
-                    foreach (var item in toUpdate)
-                    {
-                        _subscriberQueues[item].Enqueue(queueItem);
-                    }
+                    _subscriberQueues[item].Enqueue(queueItem);
                 }
             }
         }
         public IEnumerable<string> GetTopics()
         {
-            foreach (var item in _subscriberQueues.Keys.Select(s=>s.Topic).Distinct())
+            foreach (var item in _subscriberQueues.Keys.Select(s => s.Topic).Distinct())
             {
                 yield return item;
             }
@@ -43,13 +41,13 @@ namespace PublishSubscribe.Services
 
         public IEnumerable<(Subscriber Subscriber, QueueItem Message)> GetSubscribers(string topic)
         {
-            var subscribers = _subscriberQueues.Where(s => s.Key.Topic == topic && s.Value.Count>0).Select(s => s.Key);
+            var subscribers = _subscriberQueues.Where(s => s.Key.Topic == topic && s.Value.Count > 0).Select(s => s.Key);
             if (subscribers?.Count() > 0)
             {
                 foreach (var item in subscribers)
                 {
                     if (_subscriberQueues.TryGetValue(item, out var queues))
-                    { 
+                    {
                         yield return (item, queues.Peek());
                     }
                 }

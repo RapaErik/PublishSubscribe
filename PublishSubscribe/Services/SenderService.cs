@@ -19,42 +19,24 @@ namespace PublishSubscribe.Services
             _logger = LogManager.GetCurrentClassLogger();
             _httpClient = httpClient;
         }
-        public Task<bool> SendPing()
-        {
-            throw new NotImplementedException();
-        }
-
         public async Task<bool> SendPost(string url, string message)
         {
-            bool result = false;
-            var cts = new CancellationTokenSource();
+            using var cts = new CancellationTokenSource();
             cts.CancelAfter(TimeSpan.FromMilliseconds(10000));
 
             try
             {
                 var data = new StringContent(message, Encoding.UTF8, "application/json");
-              
+
                 var response = await _httpClient.PostAsync(url, data, cts.Token);
-                if(response.IsSuccessStatusCode)
-                {
-                    result = true;
-                }
-                else
-                {
-                    result = false;
-                }
+
+                return response.IsSuccessStatusCode;
             }
             catch (Exception ex)
             {
                 _logger.Error(ex);
-                result = false;
+                return false;
             }
-            finally
-            {
-                cts.Dispose();
-            }
-            return result;
-
         }
     }
 }
