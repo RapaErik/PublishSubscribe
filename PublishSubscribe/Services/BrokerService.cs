@@ -34,7 +34,6 @@ namespace PublishSubscribe.Services
             catch (Exception ex)
             {
                 _logger.Error(ex);
-                throw;
             }
 
         }
@@ -52,7 +51,7 @@ namespace PublishSubscribe.Services
                         PublishedDate = item.Message.PublishedDate, 
                         PublishedBy = item.Message.PublisherId 
                     });
-                msgSendings.Add(item.Subscriber, _senderService.SendPost(item.Subscriber.ResponseUrl, msg));
+                msgSendings.Add(item.Subscriber, _senderService.SendPostAsync(item.Subscriber.ResponseUrl, msg));
             }
             await Task.WhenAll(msgSendings.Select(x => x.Value).ToList());
 

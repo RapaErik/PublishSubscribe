@@ -19,7 +19,7 @@ namespace PublishSubscribe.Services
             _logger = LogManager.GetCurrentClassLogger();
             _httpClient = httpClient;
         }
-        public async Task<bool> SendPost(string url, string message)
+        public async Task<bool> SendPostAsync(string url, string message)
         {
             using var cts = new CancellationTokenSource();
             cts.CancelAfter(TimeSpan.FromMilliseconds(10000));

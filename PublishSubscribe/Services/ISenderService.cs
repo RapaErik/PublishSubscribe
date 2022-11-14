@@ -2,6 +2,6 @@
 {
     public interface ISenderService
     {
-        Task<bool> SendPost(string url, string message);
+        Task<bool> SendPostAsync(string url, string message);
     }
 }

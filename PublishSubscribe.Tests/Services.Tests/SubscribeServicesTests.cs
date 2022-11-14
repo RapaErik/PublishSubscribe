@@ -12,9 +12,9 @@ using System.Threading.Tasks;
 
 namespace PublishSubscribe.Tests.Services.Tests
 {
-    public class SubscribeServices
+    public class SubscribeServicesTests
     {
-        public SubscribeServices()
+        public SubscribeServicesTests()
         {
 
         }
