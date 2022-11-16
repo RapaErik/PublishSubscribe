@@ -1,4 +1,6 @@
-﻿using PublishSubscribe.Services;
+﻿using PublishSubscribe.Auth;
+using PublishSubscribe.Middlewares;
+using PublishSubscribe.Services;
 
 namespace PublishSubscribe.Extensions
 {
@@ -9,6 +11,10 @@ namespace PublishSubscribe.Extensions
                .AddSingleton<ISubscribeService, SubscribeService>();
         public static IServiceCollection AddBackgroundWorkerServices(this IServiceCollection services)
              => services.AddHostedService<BrokerService>();
+        public static IServiceCollection AddAuthServices(this IServiceCollection services)
+            => services
+            .AddTransient<AuthenticationMiddleware>()
+            .AddScoped<IAuthContext, AuthContext>();
 
 
         public static IServiceCollection AddHttpServices(this IServiceCollection services)

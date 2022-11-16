@@ -23,7 +23,7 @@ namespace PublishSubscribe.Middlewares
             catch (Exception ex)
             {
                 _logger.Error(ex, $"Error occured on path: {context.Request.Path.Value}  QueryString on path: {context.Request.QueryString} ex{ex.ToString()}");
-                context.Response.StatusCode = 400;
+                context.Response.StatusCode = 500;
             }
         }
     }

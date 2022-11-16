@@ -29,6 +29,7 @@ namespace SubClient1.Services
             {
                 var message = JsonConvert.SerializeObject(subscribe);
                 var data = new StringContent(message, Encoding.UTF8, "application/json");
+                _httpClient.DefaultRequestHeaders.Add("Token",subscribe.Token);
 
                 var response = await _httpClient.PostAsync(_brokerSubscribeUrl, data, cts.Token);
                 if (response.IsSuccessStatusCode)

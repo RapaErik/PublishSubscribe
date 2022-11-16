@@ -14,6 +14,7 @@ builder.Services.AddControllers();
 //this part we need for FluentValidation
 builder.Services.AddFluentValidationAutoValidation().AddValidatorsFromAssembly(typeof(Program).Assembly);
 builder.Services.ConfigureOptions<ApiBehaviorOptionsConfiguration>();
+builder.Services.Configure<TokensConfiguration>(opt => opt.ListOfTokens = builder.Configuration.GetSection("Tokens").Get<List<string>>());
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -24,7 +25,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddServices();
 builder.Services.AddBackgroundWorkerServices();
 builder.Services.AddHttpServices();
-
+builder.Services.AddAuthServices();
 
 var app = builder.Build();
 
@@ -41,6 +42,8 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
+
+app.UseMiddleware<AuthenticationMiddleware>();
 
 app.MapControllers();
 

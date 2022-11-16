@@ -46,7 +46,7 @@ namespace SubClient1.Controllers
             {
                 ClientUrl = "https://127.0.0.1:7069/receiver1",
                 SubscriberId = 10,
-                Token = "123",
+                Token = "4c91020e40fdaf78a251a3892bf94146",
                 Topic = TopicConstants.Topic1
             };
 
@@ -55,7 +55,7 @@ namespace SubClient1.Controllers
             {
                 ClientUrl = "https://127.0.0.1:7069/receiver2",
                 SubscriberId = 10,
-                Token = "123",
+                Token = "73b71181297b2c64d19af1efd9d8f282",
                 Topic = TopicConstants.Topic2
             };
 
@@ -63,7 +63,7 @@ namespace SubClient1.Controllers
             {
                 ClientUrl = "https://127.0.0.1:7069/receiver3",
                 SubscriberId = 10,
-                Token = "123",
+                Token = "ee40e0dd816b7d1fbab0fa62b897c3e5",
                 Topic = TopicConstants.Topic3
             };
 
